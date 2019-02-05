@@ -1,0 +1,21 @@
+version: '3'
+services:
+  web:
+    build: .
+    command: sh -c "(nohup celery worker -l info -A app.main.celery &) && /start.sh"
+    ports:
+    - "80:80"
+    volumes:
+    - model:/app/app/model
+    - data:/app/app/data
+    - logs:/app/app/logs
+    links:
+    - redis
+    restart: always
+  redis:
+    image: redis
+    restart: always
+volumes:
+  model: {}
+  data: {}
+  logs: {}
